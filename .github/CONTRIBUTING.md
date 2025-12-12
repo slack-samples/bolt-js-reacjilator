@@ -1,6 +1,6 @@
 # Contributors Guide
 
-Interested in contributing? Awesome! Before you do though, please read our [Code of Conduct](https://github.com/slack-samples/bolt-js-blank-template/blob/main/.github/CODE_OF_CONDUCT.md). We take it very seriously, and expect that you will as well.
+Interested in contributing? Awesome! Before you do though, please read our [Code of Conduct](https://github.com/slack-samples/bolt-js-reacjilator/blob/main/.github/CODE_OF_CONDUCT.md). We take it very seriously, and expect that you will as well.
 
 There are many ways you can contribute! :heart:
 
