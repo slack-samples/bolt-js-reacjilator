@@ -8,8 +8,8 @@ culture where everyone feels included.
 
 Salesforce open-source projects are committed to providing a friendly, safe, and
 welcoming environment for all, regardless of gender identity and expression,
-sexual orientation, disability, physical appearance, body size, ethnicity, nationality,
-race, age, religion, level of experience, education, socioeconomic status, or
+sexual orientation, disability, physical appearance, body size, ethnicity, nationality, 
+race, age, religion, level of experience, education, socioeconomic status, or 
 other similar personal characteristics.
 
 The goal of this code of conduct is to specify a baseline standard of behavior so
