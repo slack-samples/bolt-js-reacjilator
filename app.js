@@ -1,9 +1,7 @@
-require('dotenv').config();
-
-const langcode = require('./langcode');
-
-const { App } = require('@slack/bolt');
-const { Translate } = require('@google-cloud/translate').v2;
+import { v2 } from '@google-cloud/translate';
+import { App } from '@slack/bolt';
+import 'dotenv/config';
+import langcode from './langcode.js';
 
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -11,11 +9,11 @@ const app = new App({
   appToken: process.env.SLACK_APP_TOKEN,
 });
 
-const translate = new Translate({
+const translate = new v2.Translate({
   projectId: process.env.GOOGLE_PROJECT_ID,
 });
 
-app.event('reaction_added', async ({ event, client }) => {
+app.event('reaction_added', async ({ event, client, logger }) => {
   const { type, reaction, item } = event;
 
   if (type === 'reaction_added') {
@@ -44,13 +42,13 @@ app.event('reaction_added', async ({ event, client }) => {
     let lang = langcode[country];
     if (!lang) return;
 
-    let messages = await getMessage(item.channel, item.ts, client);
-    postTranslatedMessage(messages, lang, item.channel, reaction, client);
+    let messages = await getMessage(item.channel, item.ts, client, logger);
+    postTranslatedMessage(messages, lang, item.channel, reaction, client, logger);
 
   }
 });
 
-const getMessage = async (channel, ts, client) => {
+const getMessage = async (channel, ts, client, logger) => {
   try {
     const result = await client.conversations.replies({
       channel: channel,
@@ -60,21 +58,21 @@ const getMessage = async (channel, ts, client) => {
     });
     return result.messages;
   } catch (e) {
-    console.log(e);
+    logger.error(e);
   }
 };
 
-const postTranslatedMessage = (messages, lang, channel, emoji, client) => {
+const postTranslatedMessage = (messages, lang, channel, emoji, client, logger) => {
 
   // Google Translate API
 
   let message = messages[0];
   translate.translate(message.text, lang, (err, translation) => {
     if (err) {
-      console.log(err);
+      logger.error(err);
     } else {
       if (isAlreadyPosted(messages, translation)) return;
-      postMessage(message, translation, lang, channel, emoji, client);
+      postMessage(message, translation, lang, channel, emoji, client, logger);
     }
   });
 };
@@ -92,7 +90,7 @@ const isAlreadyPosted = (messages, translation) => {
   }
 };
 
-const postMessage = async (message, translation, lang, channel, emoji, client) => {
+const postMessage = async (message, translation, lang, channel, emoji, client, logger) => {
 
   const ts = (message.thread_ts) ? message.thread_ts : message.ts;
 
@@ -103,27 +101,27 @@ const postMessage = async (message, translation, lang, channel, emoji, client) =
     text = `_Here is a translation to_ :${emoji}: _(${lang})_`;
     blocks.push(
       {
-        type: "section", 
+        type: "section",
         text: {
-          type: "mrkdwn", 
-          text: `${translation}` 
+          type: "mrkdwn",
+          text: `${translation}`
         }
       },
       {
-        type: "context", 
+        type: "context",
         elements: [
           { type: "mrkdwn", text: `A translation of the original message to :${emoji}: _(${lang})_` }
-        ] 
+        ]
       },
     );
   } else {
     text = '_Sorry, the language is not supported!_ :persevere:';
     blocks.push(
       {
-        type: "section", 
+        type: "section",
         text: {
-          type: "mrkdwn", 
-          text: `_Sorry, the language is not supported!_ :persevere:` 
+          type: "mrkdwn",
+          text: `_Sorry, the language is not supported!_ :persevere:`
         }
       }
     );
@@ -137,9 +135,9 @@ const postMessage = async (message, translation, lang, channel, emoji, client) =
       thread_ts: ts
     });
 
-    console.log(result);
+    logger.info(result);
   } catch (e) {
-    console.log(e);
+    logger.error(e);
   }
 };
 
@@ -148,11 +146,9 @@ const postMessage = async (message, translation, lang, channel, emoji, client) =
   try {
     // Start your app
     await app.start();
-    // eslint-disable-next-line no-console
-    console.log('⚡️ Bolt app is running!');
+    app.logger.info('⚡️ Bolt app is running!');
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Unable to start App', error);
+    app.logger.error('Unable to start App', error);
     process.exit(1);
   }
 })();
