@@ -1,4 +1,4 @@
-import { v2 } from '@google-cloud/translate';
+import { v2 as gcloud } from '@google-cloud/translate';
 import { App } from '@slack/bolt';
 import 'dotenv/config';
 import langcode from './langcode.js';
@@ -9,7 +9,7 @@ const app = new App({
   appToken: process.env.SLACK_APP_TOKEN,
 });
 
-const translate = new v2.Translate({
+const translate = new gcloud.Translate({
   projectId: process.env.GOOGLE_PROJECT_ID,
 });
 
