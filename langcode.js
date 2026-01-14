@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   ac: 'en',
   ad: 'ca',
   ae: 'ar',
