@@ -20,7 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "@google-cloud/translate": "^9.3.0",
-    "@slack/bolt": "^4.7.1",
+    "@slack/bolt": "^4.7.2",
     "dotenv": "^17.4.2"
   }
 }
