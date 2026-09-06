@@ -22,5 +22,8 @@
     "@google-cloud/translate": "^9.4.2",
     "@slack/bolt": "^5.0.0",
     "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@slack/cli-hooks": "^2.0.0"
   }
 }

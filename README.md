@@ -4,7 +4,38 @@ Reacjilator translates a message when a user reacts with an emoji (*"reacji"*). 
 
 ![Reacjilator demo](tutorial_images/reacjilator-demo.gif)
 
-## Set Up Your Slack App
+## Installation
+
+### Using Slack CLI
+
+Install the latest version of the Slack CLI for your operating system:
+
+- [Slack CLI for macOS & Linux](https://docs.slack.dev/tools/slack-cli/guides/installing-the-slack-cli-for-mac-and-linux/)
+- [Slack CLI for Windows](https://docs.slack.dev/tools/slack-cli/guides/installing-the-slack-cli-for-windows/)
+
+You'll also need to log in if this is your first time using the Slack CLI.
+
+```sh
+slack login
+```
+
+#### Initializing the project
+
+```sh
+slack create bolt-js-reacjilator --template slack-samples/bolt-js-reacjilator
+cd bolt-js-reacjilator
+```
+
+#### Running the app
+
+```sh
+slack run
+```
+
+<details>
+<summary><h3>Using Terminal</h3></summary>
+
+#### Set Up Your Slack App
 
 1. Create an app at your Slack App Settings page at [api.slack.com/apps](https://api.slack.com/apps)
 2. Choose "From an app manifest", select the workspace you want to use, then paste the contents of [`manifest.yml`](./manifest.yml) into the dialog marked "Enter app manifest below".
@@ -12,7 +43,7 @@ Reacjilator translates a message when a user reacts with an emoji (*"reacji"*). 
 4. On the **Basic Information** page, scroll down to **App-Level Tokens** and click **Generate Token and Scopes**.
 5. Add the `connections:write` scope, give your token a name, and click **Generate**. Copy this new token to your `.env` file as `SLACK_APP_TOKEN`
 
-### Credentials
+##### Credentials
 
 Rename the `.env.sample` to `.env` and fill the env vars with your credentials. You also need Google credentials to use the Google translation API:
 
@@ -27,3 +58,4 @@ Get Your Slack App-Level Token at **Basic Information**, And your bot token at *
 
 Get your Google Cloud project ID and application credentials at [cloud.google.com](https://cloud.google.com/translate/docs/getting-started)
 
+</details>
